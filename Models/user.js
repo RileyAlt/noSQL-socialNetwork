@@ -12,11 +12,9 @@ const userSchema = new Schema(
         type: String,
         Required: true,
         Unique: true,
-        match:[
-            //TODO: email match
-        ],
-       },
-       thoughts: [
+        match: [/.+@.+\..+/, 'please provide an email!']
+    },
+    thoughts: [
         {
             type: Schema.Types.ObjectId,
             ref: 'thought',

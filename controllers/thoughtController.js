@@ -21,4 +21,10 @@ module.exports = {
             .then((dbThoughtData) => res.json(dbThoughtData))
             .catch((err) => res.status(500).json(err));
     },
+
+    deleteThought(req, res){
+        thought.findOneAndRemove({_id: req.params.thoughtId})
+            .then((dbThoughtData) => res.json(dbThoughtData))
+            .catch((err) => res.status(500).json(err));
+    }
 };
