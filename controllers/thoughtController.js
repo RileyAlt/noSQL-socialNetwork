@@ -25,10 +25,9 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // This method needs to update "thoughtText"
   updateThought(req, res) {
     thought
-    .findOneAndUpdate({ _id: req.params.thoughtId }, req.body)
+      .findOneAndUpdate({ _id: req.params.thoughtId }, req.body)
       .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => res.status(500).json(err));
   },
@@ -42,7 +41,20 @@ module.exports = {
 
   createThoughtReaction(req, res) {
     thought
-      .create(req.body)
+      .findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $push: { reactions: req.body } }
+      )
+      .then((dbThoughtData) => res.json(dbThoughtData))
+      .catch((err) => res.status(500).json(err));
+  },
+
+  deleteThoughtReaction(req, res) {
+    thought
+      .findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { thought: req.params.thoughtId } }
+      )
       .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => res.status(500).json(err));
   },

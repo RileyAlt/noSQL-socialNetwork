@@ -18,6 +18,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
+
   createUser(req, res) {
     user
       .create(req.body)
@@ -25,12 +26,14 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
+
   updateUser(req, res) {
     user
       .findOneAndUpdate({ _id: req.params.userId }, req.body)
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => res.status(500).json(err));
   },
+
 
   deleteUser(req, res) {
     user
@@ -43,7 +46,17 @@ module.exports = {
     user
       .findOneAndUpdate(
         { _id: req.params.userId },
-        { friends: [req.params.friendId] }
+        { $push: { friends: req.params.friendId } }
+      )
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.status(500).json(err));
+  },
+
+  deleteFriend(req, res) {
+    user
+      .findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { friends: req.params.friendId } }
       )
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => res.status(500).json(err));
