@@ -18,7 +18,6 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-
   createUser(req, res) {
     user
       .create(req.body)
@@ -26,14 +25,16 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-
   updateUser(req, res) {
     user
       .findOneAndUpdate({ _id: req.params.userId }, req.body)
-      .then((dbUserData) => res.json(dbUserData))
+      .then((userFromDB) =>
+        !userFromDB
+          ? res.status(404).json({ message: "No User with this ID" })
+          : res.json(userFromDB)
+      )
       .catch((err) => res.status(500).json(err));
   },
-
 
   deleteUser(req, res) {
     user
